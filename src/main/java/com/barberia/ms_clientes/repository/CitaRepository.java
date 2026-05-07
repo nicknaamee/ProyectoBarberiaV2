@@ -1,5 +1,9 @@
 package com.barberia.ms_clientes.repository;
 
-public class CitaRepository {
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class CitaRepository extends JpaRepository<Cita, Long> {
+
 
 }
