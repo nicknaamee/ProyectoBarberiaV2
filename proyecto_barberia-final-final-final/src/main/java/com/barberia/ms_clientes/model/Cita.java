@@ -26,7 +26,7 @@ public class Cita {
 
     @ManyToOne
     @JoinColumn(name = "id_barbero")
-    private Barbero barbero;
+    private Integer idBarbero;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
