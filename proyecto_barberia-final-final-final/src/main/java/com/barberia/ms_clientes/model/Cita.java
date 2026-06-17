@@ -24,19 +24,16 @@ public class Cita {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCita;
 
-    @ManyToOne
     @JoinColumn(name = "id_barbero")
     private Integer idBarbero;
 
-    @ManyToOne
     @JoinColumn(name = "id_cliente")
-    private Cliente cliente;
+    private Integer idCliente;
 
     private LocalDate fechaCita;
     private LocalTime horaInicio;
     private String estadoCita;
 
-    @ManyToOne
     @JoinColumn(name = "id_servicio")
-    private Servicio servicio;
+    private Integer idServicio;
 }

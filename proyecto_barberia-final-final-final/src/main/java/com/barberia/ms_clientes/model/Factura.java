@@ -22,9 +22,8 @@ public class Factura {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idFactura;
 
-    @OneToOne
     @JoinColumn(name="id_cita", nullable= false, unique=true)
-    private Cita cita;
+    private Integer idCita;
 
     @Column(nullable = false)
     private Double montoTotal;
