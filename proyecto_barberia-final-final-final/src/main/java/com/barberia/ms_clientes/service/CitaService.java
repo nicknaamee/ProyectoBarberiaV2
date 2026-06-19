@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.barberia.ms_clientes.model.Barbero;
 import com.barberia.ms_clientes.dto.CitaDTO;
 import com.barberia.ms_clientes.model.Cita;
 import com.barberia.ms_clientes.repository.CitaRepository;
@@ -31,11 +30,8 @@ public class CitaService {
                 .toList();
     }
 
-    public List<CitaDTO> buscarPorBarbero(Long idBarbero) {
-        Barbero barbero = new Barbero();
-        barbero.setIdBarbero(idBarbero);
-
-        return citaRepository.findByBarbero(barbero).stream()
+    public List<CitaDTO> buscarPorBarbero(Integer idBarbero) {
+        return citaRepository.findByBarbero(idBarbero).stream()
                 .map(this::convertirADTO)
                 .toList();
 
