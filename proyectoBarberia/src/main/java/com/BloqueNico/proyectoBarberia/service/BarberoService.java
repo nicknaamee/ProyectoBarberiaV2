@@ -48,19 +48,9 @@ public class BarberoService {
 
     public Barbero actualizarBarberos(Long idBarbero, Barbero barbero){
         Barbero barber = barberoRepository.findById(idBarbero).orElseThrow(()-> new RuntimeException("No existe Barbero con ese ID"));
-
-        if (barbero.getNombreBarbero() != null){
-            barber.setNombreBarbero(barbero.getNombreBarbero());
-        }
-
-        if (barbero.getEspecialidadBarbero() != null){
-            barber.setEspecialidadBarbero(barbero.getEspecialidadBarbero());
-        }
-
-        if (barbero.getTelefonoBarbero() != null){
-            barber.setTelefonoBarbero(barbero.getTelefonoBarbero());
-        }
-
+        barber.setNombreBarbero(barbero.getNombreBarbero());
+        barber.setEspecialidadBarbero(barbero.getEspecialidadBarbero());
+        barber.setTelefonoBarbero(barbero.getTelefonoBarbero());
         return barberoRepository.save(barbero);
         
     }
