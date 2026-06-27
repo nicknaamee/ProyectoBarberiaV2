@@ -1,5 +1,7 @@
 package com.BloqueNico.proyectoBarberia;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
@@ -21,26 +23,44 @@ import com.BloqueNico.service.ClienteService;
 class ClienteServiceTest {
 
     @Mock
-    private ClienteRepository clienteRepository; 
+    private ClienteRepository repositorioDeClientes;
 
     @InjectMocks
-    private ClienteService clienteService; 
+    private ClienteService clienteService;
 
     @Test
-    void cuandoGuardarNuevoCliente_entoncesRetornaClienteDTOCreado() {
+    void testeoGuardarCliente() {
         ClienteDTO dtoEntrada = new ClienteDTO();
-        dtoEntrada.setNombreCliente("Carlos");
-        dtoEntrada.setTelefonoCliente("912345678");
+        dtoEntrada.setNombreCliente("Nico");
+        dtoEntrada.setApellidoCliente("Poblete");
+        dtoEntrada.setEmailCliente("nico@correo.com");
+        dtoEntrada.setTelefonoCliente("+56911112222");
         Cliente clienteGuardado = new Cliente();
-        clienteGuardado.setIdCliente(1L); 
-        clienteGuardado.setNombreCliente("Carlos");
-        clienteGuardado.setTelefonoCliente("912345678");
-        when(clienteRepository.save(any(Cliente.class))).thenReturn(clienteGuardado);
+        clienteGuardado.setIdCliente(1L);
+        clienteGuardado.setNombreCliente("Nico");
+        clienteGuardado.setApellidoCliente("Poblete");
+        clienteGuardado.setEmailCliente("nico@correo.com");
+        clienteGuardado.setTelefonoCliente("+56911112222");
+        when(repositorioDeClientes.save(any(Cliente.class))).thenReturn(clienteGuardado);
         ClienteDTO resultadoDTO = clienteService.guardarNuevoCliente(dtoEntrada);
         assertNotNull(resultadoDTO);
-        assertEquals(1L, resultadoDTO.getIdCliente()); 
-        assertEquals("Carlos", resultadoDTO.getNombreCliente());
-        assertEquals("912345678", resultadoDTO.getTelefonoCliente());
-        verify(clienteRepository, times(1)).save(any(Cliente.class));
+        assertEquals(1L, resultadoDTO.getIdCliente());
+        assertEquals("Nico", resultadoDTO.getNombreCliente());
+        assertEquals("Poblete", resultadoDTO.getApellidoCliente());
+        verify(repositorioDeClientes, times(1)).save(any(Cliente.class));
     }
-}
+
+    @Test
+    void testeoTraerClientePorIdExistente() {
+        Long idBusqueda = 10L;
+        Cliente clienteBD = new Cliente();
+        clienteBD.setIdCliente(idBusqueda);
+        clienteBD.setNombreCliente("Carlos");
+        clienteBD.setApellidoCliente("Caszely");
+        when(repositorioDeClientes.findById(idBusqueda)).thenReturn(Optional.of(clienteBD));
+        ClienteDTO resultadoDTO = clienteService.traerClientePorId(idBusqueda);
+        assertNotNull(resultadoDTO);
+        assertEquals(idBusqueda, resultadoDTO.getIdCliente());
+        assertEquals("Carlos", resultadoDTO.getNombreCliente());
+        verify(repositorioDeClientes, times(1)).findById(idBusqueda);
+    }}

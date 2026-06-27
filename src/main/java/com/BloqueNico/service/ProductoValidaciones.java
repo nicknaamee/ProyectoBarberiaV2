@@ -11,7 +11,7 @@ import com.BloqueNico.model.Producto;
 public class ProductoValidaciones {
 
     @Autowired
-    private WebClient.Builder webClientBuilder; // Mantenemos la estructura requerida por el docente
+    private WebClient.Builder webClientBuilder; 
 
     public Boolean validarProducto(Producto producto) {
         if (producto.getNombreDelProducto() == null || producto.getNombreDelProducto().trim().isEmpty()) {

@@ -51,7 +51,7 @@ public class BarberoService {
         barber.setNombreBarbero(barbero.getNombreBarbero());
         barber.setEspecialidadBarbero(barbero.getEspecialidadBarbero());
         barber.setTelefonoBarbero(barbero.getTelefonoBarbero());
-        return barberoRepository.save(barbero);
+        return barberoRepository.save(barber);
         
     }
 
