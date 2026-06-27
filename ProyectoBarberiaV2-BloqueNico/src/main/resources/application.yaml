@@ -1,0 +1,60 @@
+server:
+    port: 0 # V6: Puerto aleatorio dinámico gestionado por Eureka
+
+springdoc:
+    api-docs:
+        path: /citas/api-docs # V7: Ruta personalizada para que el Gateway junte el Swagger
+
+eureka:
+    client:
+        service-url:
+            defaultZone: http://localhost:8761/eureka/ # Servidor del compañero
+
+spring:
+    application:
+        name: ms-citas # El nombre de tu microservicio para la red
+    jpa:
+        show-sql: "true"
+
+    profiles:
+        active: dev # Por defecto arranca en desarrollo local
+
+---
+spring:
+    config:
+        activate:
+            on-profile: dev
+    datasource:
+        username: root
+        url: jdbc:mysql://localhost:3306/db_barberia_dev?createDatabaseIfNotExist=true
+        driverClassName: com.mysql.cj.jdbc.Driver
+        password: ""
+    jpa:
+        hibernate:
+            ddl-auto: update
+---
+spring:
+    config:
+        activate:
+            on-profile: test
+    datasource:
+        username: root
+        url: jdbc:mysql://localhost:3306/db_barberia_test?createDatabaseIfNotExist=true
+        driverClassName: com.mysql.cj.jdbc.Driver
+        password: ""
+    jpa:
+        hibernate:
+            ddl-auto: update
+---
+spring:
+    config:
+        activate:
+            on-profile: prod
+    datasource:
+        username: root
+        url: jdbc:mysql://localhost:3306/db_barberia_prod?createDatabaseIfNotExist=true
+        driverClassName: com.mysql.cj.jdbc.Driver
+        password: ""
+    jpa:
+        hibernate:
+            ddl-auto: none # En producción nunca se permite que Hibernate altere las tablas
