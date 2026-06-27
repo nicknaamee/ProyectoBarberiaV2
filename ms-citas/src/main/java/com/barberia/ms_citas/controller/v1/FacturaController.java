@@ -34,4 +34,9 @@ public class FacturaController {
     public ResponseEntity<FacturaDTO> cambiarMetodoPago(@PathVariable Long id, @RequestParam String nuevoMetodo) {
         return ResponseEntity.ok(facturaService.cambiarMetodoPago(id, nuevoMetodo));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> eliminar(@PathVariable Long id) {
+        return ResponseEntity.ok(facturaService.eliminar(id));
+    }
 }

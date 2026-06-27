@@ -70,4 +70,11 @@ public class FacturaService {
                 .orElseThrow(() -> new RuntimeException("No existe factura con ese ID"));
         return facturaValidaciones.convertirADTO(factura);
     }
+
+    public String eliminar(Long id) {
+        Factura factura = facturaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No existe factura con ese ID"));
+        facturaRepository.delete(factura);
+        return "Factura eliminada correctamente con id: " + id;
+    }
 }
