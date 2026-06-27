@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MetodosPagoDTO {
 
+    private Long id;
+
     @NotNull(message = "el id de la sucursal es obligatorio")
     private Long idSucursal;
 

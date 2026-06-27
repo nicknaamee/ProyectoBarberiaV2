@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MetodoPagoDTO {
 
+    private Long id;
+
     @NotBlank(message = "el nombre del metodo es obligatorio")
     private String nombre;
 

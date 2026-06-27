@@ -5,10 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import com.barberia.ms_clientes.dto.CitaDTO;
-import com.barberia.ms_clientes.dto.BarberoExternoDTO;
 import com.barberia.ms_clientes.model.Cita;
 import com.barberia.ms_clientes.repository.CitaRepository;
 
@@ -22,19 +20,22 @@ public class CitaService {
     private CitaRepository citaRepository;
 
     @Autowired
-    private WebClient.Builder webClientBuilder;
+    private CitaValidaciones citaValidaciones;
 
     public CitaDTO agendarCita(Cita nuevaCita) {
-        nuevaCita.setEstadoCita("Pendiente");
-        Cita guardada = citaRepository.save(nuevaCita);
-        return convertirADTO(guardada);
+        if (citaValidaciones.validarNullVacio(nuevaCita)) {
+            nuevaCita.setEstadoCita("Pendiente");
+            Cita guardada = citaRepository.save(nuevaCita);
+            return citaValidaciones.convertirADTO(guardada);
+        }
+        return null;
     }
 
-    public List<CitaDTO> obtenerTodos(){
+    public List<CitaDTO> obtenerTodos() {
         List<CitaDTO> listaDTOs = new ArrayList<>();
         List<Cita> citasReales = citaRepository.findAll();
         for (Cita c : citasReales) {
-            listaDTOs.add(convertirADTO(c));
+            listaDTOs.add(citaValidaciones.convertirADTO(c));
         }
         return listaDTOs;
     }
@@ -43,15 +44,15 @@ public class CitaService {
         List<CitaDTO> listaDTOs = new ArrayList<>();
         List<Cita> citasFiltradas = citaRepository.findByIdBarbero(idBarbero);
         for (Cita c : citasFiltradas) {
-            listaDTOs.add(convertirADTO(c));
+            listaDTOs.add(citaValidaciones.convertirADTO(c));
         }
         return listaDTOs;
     }
 
-    public String eliminar(Long idCita){
-        try{
+    public String eliminar(Long idCita) {
+        try {
             Cita cita = citaRepository.findById(idCita)
-                        .orElseThrow(() -> new RuntimeException("No existe Cita con ese ID"));
+                    .orElseThrow(() -> new RuntimeException("No existe Cita con ese ID"));
             citaRepository.delete(cita);
             return "La Cita '" + cita.getIdCita() + "' ha sido eliminada";
         } catch (RuntimeException e) {
@@ -63,64 +64,39 @@ public class CitaService {
         Cita cita = citaRepository.findById(idCita)
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
         cita.setEstadoCita(nuevoEstado);
-        
-        return convertirADTO(citaRepository.save(cita));
+
+        return citaValidaciones.convertirADTO(citaRepository.save(cita));
     }
 
     public Cita guardarCita(Cita cita) {
         return citaRepository.save(cita);
     }
 
-    public Cita actualizarCitas(Long idCita, Cita datosNuevos){
-        Cita citaExistente = citaRepository.findById(idCita).orElseThrow(()-> new RuntimeException("No existe Cita con ese ID"));
+    public Cita actualizarCitas(Long idCita, Cita datosNuevos) {
+        Cita citaExistente = citaRepository.findById(idCita)
+                .orElseThrow(() -> new RuntimeException("No existe Cita con ese ID"));
 
-        if (datosNuevos.getHoraInicio() != null){
+        if (datosNuevos.getHoraInicio() != null) {
             citaExistente.setHoraInicio(datosNuevos.getHoraInicio());
         }
 
-        if (datosNuevos.getEstadoCita() != null){
+        if (datosNuevos.getEstadoCita() != null) {
             citaExistente.setEstadoCita(datosNuevos.getEstadoCita());
         }
 
-        if (datosNuevos.getFechaCita() != null){
+        if (datosNuevos.getFechaCita() != null) {
             citaExistente.setFechaCita(datosNuevos.getFechaCita());
         }
-        
+
         return citaRepository.save(citaExistente);
     }
 
-    public List<CitaDTO> buscarPorEstadoCita(String estadoCita){
+    public List<CitaDTO> buscarPorEstadoCita(String estadoCita) {
         List<CitaDTO> listaDTOs = new ArrayList<>();
         List<Cita> citasPorEstado = citaRepository.findByEstadoCita(estadoCita);
         for (Cita c : citasPorEstado) {
-            listaDTOs.add(convertirADTO(c));
+            listaDTOs.add(citaValidaciones.convertirADTO(c));
         }
         return listaDTOs;
-    }
-    
-    private CitaDTO convertirADTO(Cita cita){
-        CitaDTO dto = new CitaDTO();
-        dto.setIdCita(cita.getIdCita());
-        dto.setFechaCita(cita.getFechaCita());
-        dto.setHoraInicio(cita.getHoraInicio());
-        dto.setEstadoCita(cita.getEstadoCita());
-
-        try {
-            BarberoExternoDTO barberoDetectado = webClientBuilder.build()
-                .get()
-                .uri("http://localhost:8082/api/v1/barberos/" + cita.getIdBarbero())
-                .retrieve()
-                .bodyToMono(BarberoExternoDTO.class)
-                .block();
-
-            dto.setBarbero(barberoDetectado);
-        } catch (Exception e) {
-            BarberoExternoDTO errorDto = new BarberoExternoDTO();
-            errorDto.setIdBarbero(cita.getIdBarbero());
-            errorDto.setNombreBarbero("Desconectado del servicio de barberos (offline o no existe)");
-            dto.setBarbero(errorDto);
-        }
-
-        return dto;
     }
 }

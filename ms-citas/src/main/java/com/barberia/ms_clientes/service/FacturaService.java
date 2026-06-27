@@ -9,6 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.barberia.ms_clientes.dto.ServicioExternoDTO;
 
 @Service
 @Slf4j
@@ -20,11 +24,15 @@ public class FacturaService {
     @Autowired
     private CitaRepository citaRepository;
 
+    @Autowired
+    private FacturaValidaciones facturaValidaciones;
+
     public FacturaDTO generarFactura(Long idCita, String metodo) {
         Cita cita = citaRepository.findById(idCita)
-                .orElseThrow(()-> new RuntimeException("Cita no encontrada"));
-        
-        Double costoFinal = cita.getServicio().getPrecioDelServicio();
+                .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
+
+        ServicioExternoDTO servicio = facturaValidaciones.obtenerServicio(cita.getIdServicio());
+        Double costoFinal = servicio.getPrecioDelServicio();
 
         if (facturaRepository.findByCitaIdCita(idCita).isPresent()) {
             throw new RuntimeException("Esta cita ya fue facturada anteriormente");
@@ -36,19 +44,21 @@ public class FacturaService {
         factura.setMetodoDePago(metodo);
         factura.setFechaEmision(LocalDateTime.now());
 
-        return convertirADTO(facturaRepository.save(factura));
+        return facturaValidaciones.convertirADTO(facturaRepository.save(factura));
     }
 
-    private FacturaDTO convertirADTO(Factura factura) {
-        FacturaDTO dto = new FacturaDTO();
-        dto.setIdFactura(factura.getIdFactura());
-        dto.setIdCita(factura.getCita().getIdCita());
-        dto.setMontoTotal(factura.getMontoTotal());
-        dto.setMetodoDePago(factura.getMetodoDePago());
-        dto.setFechaEmision(factura.getFechaEmision());
-        
-        dto.setNombreCliente(factura.getCita().getCliente().getNombreCliente());
-        dto.setNombreBarbero(factura.getCita().getBarbero().getNombreBarbero());
-        return dto;
+    public List<FacturaDTO> obtenerTodas() {
+        List<FacturaDTO> listaDTOs = new ArrayList<>();
+        List<Factura> facturas = facturaRepository.findAll();
+        for (Factura f : facturas) {
+            listaDTOs.add(facturaValidaciones.convertirADTO(f));
+        }
+        return listaDTOs;
+    }
+
+    public FacturaDTO obtenerPorId(Long id) {
+        Factura factura = facturaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No existe factura con ese ID"));
+        return facturaValidaciones.convertirADTO(factura);
     }
 }

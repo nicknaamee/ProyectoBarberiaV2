@@ -20,16 +20,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 
 public class Factura {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idFactura;
 
-    @JoinColumn(name="id_cita", nullable= false, unique=true)
-    private Integer idCita;
+    @JoinColumn(name = "id_cita", nullable = false, unique = true)
+    private Cita cita;
 
     @Column(nullable = false)
     private Double montoTotal;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String metodoDePago;
 
     @Column(nullable = false)
