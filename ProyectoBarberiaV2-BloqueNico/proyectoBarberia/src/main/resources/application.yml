@@ -1,0 +1,91 @@
+# ==============================
+# Configuración General del Microservicio
+# ==============================
+server:
+  port: 8081
+
+spring:
+  application:
+    name: proyectoBarberia
+  profiles:
+    active: dev
+
+  jpa:
+    show-sql: true
+
+# ==============================
+# Eureka Client - Registro en el Service Discovery
+# ==============================
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+# ==============================
+# Swagger / OpenAPI - Documentación de la API
+# ==============================
+springdoc:
+  api-docs:
+    path: /barberia/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+---
+# ==============================
+# PERFIL: Desarrollo Local (dev)
+# ==============================
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:mysql://localhost:3306/db_proyecto_barberia?createDatabaseIfNotExist=true
+    username: root
+    password: ""
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  flyway:
+    enabled: false
+
+---
+# ==============================
+# PERFIL: Testing (test)
+# ==============================
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:mysql://localhost:3306/db_barberia_test?createDatabaseIfNotExist=true
+    username: root
+    password: ""
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  flyway:
+    enabled: false
+
+---
+# ==============================
+# PERFIL: Producción (prod)
+# ==============================
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/db_barberia_prod}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
