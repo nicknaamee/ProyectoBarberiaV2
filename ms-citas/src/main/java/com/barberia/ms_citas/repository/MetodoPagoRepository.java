@@ -1,6 +1,6 @@
-package com.barberia.ms_clientes.repository;
+package com.barberia.ms_citas.repository;
 
-import com.barberia.ms_clientes.model.MetodoPago;
+import com.barberia.ms_citas.model.MetodoPago;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,3 +8,4 @@ import org.springframework.stereotype.Repository;
 public interface MetodoPagoRepository extends JpaRepository<MetodoPago, Long> {
 
 }
+

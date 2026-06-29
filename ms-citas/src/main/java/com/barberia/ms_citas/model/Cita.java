@@ -1,5 +1,5 @@
 
-package com.barberia.ms_clientes.model;
+package com.barberia.ms_citas.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

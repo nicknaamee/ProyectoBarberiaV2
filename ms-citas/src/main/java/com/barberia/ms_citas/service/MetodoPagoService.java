@@ -1,11 +1,12 @@
-package com.barberia.ms_clientes.service;
+package com.barberia.ms_citas.service;
 
-import com.barberia.ms_clientes.dto.MetodoPagoDTO;
-import com.barberia.ms_clientes.model.MetodoPago;
-import com.barberia.ms_clientes.repository.MetodoPagoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.barberia.ms_citas.dto.MetodoPagoDTO;
+import com.barberia.ms_citas.model.MetodoPago;
+import com.barberia.ms_citas.repository.MetodoPagoRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class MetodoPagoService {
     public MetodoPagoDTO traerPorId(Long id) {
         log.info("buscando metodo de pago con id: {}", id);
         MetodoPago metodo = repo.findById(id)
-            .orElseThrow(() -> new RuntimeException("no existe el metodo de pago con id: " + id));
+                .orElseThrow(() -> new RuntimeException("no existe el metodo de pago con id: " + id));
         return validaciones.convertirADTO(metodo);
     }
 
@@ -48,10 +49,18 @@ public class MetodoPagoService {
         return validaciones.convertirADTO(repo.save(nuevo));
     }
 
+    public MetodoPagoDTO cambiarEstado(Long id, Boolean activo) {
+        log.info("cambiando estado del metodo de pago con id: " + id + " a " + activo);
+        MetodoPago metodo = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("no existe el metodo de pago con id: " + id));
+        metodo.setActivo(activo);
+        return validaciones.convertirADTO(repo.save(metodo));
+    }
+
     public MetodoPagoDTO actualizar(Long id, MetodoPagoDTO datos) {
         log.info("actualizando metodo de pago con id: {}", id);
         MetodoPago metodo = repo.findById(id)
-            .orElseThrow(() -> new RuntimeException("no existe el metodo de pago con id: " + id));
+                .orElseThrow(() -> new RuntimeException("no existe el metodo de pago con id: " + id));
         if (!validaciones.validarNullVacio(datos)) {
             throw new RuntimeException("Faltan datos obligatorios");
         }
@@ -63,7 +72,7 @@ public class MetodoPagoService {
     public void eliminar(Long id) {
         log.info("eliminando metodo de pago con id: {}", id);
         MetodoPago metodo = repo.findById(id)
-            .orElseThrow(() -> new RuntimeException("no existe el metodo de pago con id: " + id));
+                .orElseThrow(() -> new RuntimeException("no existe el metodo de pago con id: " + id));
         repo.delete(metodo);
     }
 }

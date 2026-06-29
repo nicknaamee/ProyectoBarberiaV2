@@ -1,13 +1,14 @@
-package com.barberia.ms_clientes;
+package com.barberia.ms_citas;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MsClientesApplication {
+public class MsCitasApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MsClientesApplication.class, args);
+		SpringApplication.run(MsCitasApplication.class, args);
 	}
 
 }
+

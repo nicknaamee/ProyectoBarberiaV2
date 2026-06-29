@@ -1,4 +1,4 @@
-package com.barberia.ms_clientes.dto;
+package com.barberia.ms_citas.dto;
 
 import lombok.Data;
 

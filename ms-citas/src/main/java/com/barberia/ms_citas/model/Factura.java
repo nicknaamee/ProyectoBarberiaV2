@@ -1,4 +1,4 @@
-package com.barberia.ms_clientes.model;
+package com.barberia.ms_citas.model;
 
 import java.time.LocalDateTime;
 
@@ -36,3 +36,4 @@ public class Factura {
     @Column(nullable = false)
     private LocalDateTime fechaEmision;
 }
+

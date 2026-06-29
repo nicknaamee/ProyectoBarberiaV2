@@ -1,4 +1,4 @@
-package com.barberia.ms_clientes.exception;
+package com.barberia.ms_citas.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -38,4 +38,5 @@ public class GlobalExceptionHandler {
     }
 
 }
+
 

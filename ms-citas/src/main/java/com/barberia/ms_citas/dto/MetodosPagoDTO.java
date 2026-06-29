@@ -1,4 +1,4 @@
-package com.barberia.ms_clientes.dto;
+package com.barberia.ms_citas.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -18,3 +18,4 @@ public class MetodosPagoDTO {
     @NotNull(message = "el id del metodo de pago es obligatorio")
     private Long idMetodoPago;
 }
+

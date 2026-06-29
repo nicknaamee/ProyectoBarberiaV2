@@ -1,4 +1,4 @@
-package com.barberia.ms_clientes.model;
+package com.barberia.ms_citas.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

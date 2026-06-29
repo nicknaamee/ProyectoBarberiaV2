@@ -1,4 +1,4 @@
-package com.barberia.ms_clientes.dto;
+package com.barberia.ms_citas.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

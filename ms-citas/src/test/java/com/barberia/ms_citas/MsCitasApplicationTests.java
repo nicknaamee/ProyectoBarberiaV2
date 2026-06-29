@@ -1,13 +1,14 @@
-package com.barberia.ms_clientes;
+package com.barberia.ms_citas;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MsClientesApplicationTests {
+class MsCitasApplicationTests {
 
 	@Test
 	void contextLoads() {
 	}
 
 }
+

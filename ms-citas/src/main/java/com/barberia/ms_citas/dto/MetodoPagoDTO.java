@@ -1,4 +1,4 @@
-package com.barberia.ms_clientes.dto;
+package com.barberia.ms_citas.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,3 +19,4 @@ public class MetodoPagoDTO {
     @NotNull(message = "se debe indicar si esta activo")
     private Boolean activo;
 }
+

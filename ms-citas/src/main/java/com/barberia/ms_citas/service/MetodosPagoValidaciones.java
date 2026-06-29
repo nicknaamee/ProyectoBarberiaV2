@@ -1,9 +1,9 @@
-package com.barberia.ms_clientes.service;
+package com.barberia.ms_citas.service;
 
 import org.springframework.stereotype.Service;
 
-import com.barberia.ms_clientes.dto.MetodosPagoDTO;
-import com.barberia.ms_clientes.model.MetodosPago;
+import com.barberia.ms_citas.dto.MetodosPagoDTO;
+import com.barberia.ms_citas.model.MetodosPago;
 
 @Service
 public class MetodosPagoValidaciones {

@@ -1,4 +1,4 @@
-package com.barberia.ms_clientes.service;
+package com.barberia.ms_citas.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.barberia.ms_clientes.dto.CitaDTO;
-import com.barberia.ms_clientes.model.Cita;
-import com.barberia.ms_clientes.repository.CitaRepository;
+import com.barberia.ms_citas.dto.CitaDTO;
+import com.barberia.ms_citas.model.Cita;
+import com.barberia.ms_citas.repository.CitaRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -40,6 +40,12 @@ public class CitaService {
         return listaDTOs;
     }
 
+    public CitaDTO buscarPorId(Long idCita) {
+        Cita cita = citaRepository.findById(idCita)
+                .orElseThrow(() -> new RuntimeException("No existe Cita con ese ID"));
+        return citaValidaciones.convertirADTO(cita);
+    }
+
     public List<CitaDTO> buscarPorBarbero(Long idBarbero) {
         List<CitaDTO> listaDTOs = new ArrayList<>();
         List<Cita> citasFiltradas = citaRepository.findByIdBarbero(idBarbero);
@@ -50,14 +56,10 @@ public class CitaService {
     }
 
     public String eliminar(Long idCita) {
-        try {
-            Cita cita = citaRepository.findById(idCita)
-                    .orElseThrow(() -> new RuntimeException("No existe Cita con ese ID"));
-            citaRepository.delete(cita);
-            return "La Cita '" + cita.getIdCita() + "' ha sido eliminada";
-        } catch (RuntimeException e) {
-            return e.getMessage();
-        }
+        Cita cita = citaRepository.findById(idCita)
+                .orElseThrow(() -> new RuntimeException("No existe Cita con ese ID"));
+        citaRepository.delete(cita);
+        return "La Cita '" + cita.getIdCita() + "' ha sido eliminada";
     }
 
     public CitaDTO cambiarEstadoCita(Long idCita, String nuevoEstado) {

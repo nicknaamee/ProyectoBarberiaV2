@@ -1,13 +1,13 @@
-package com.barberia.ms_clientes.service;
+package com.barberia.ms_citas.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.barberia.ms_clientes.dto.CitaDTO;
-import com.barberia.ms_clientes.dto.BarberoExternoDTO;
-import com.barberia.ms_clientes.model.Cita;
+import com.barberia.ms_citas.dto.CitaDTO;
+import com.barberia.ms_citas.dto.BarberoExternoDTO;
+import com.barberia.ms_citas.model.Cita;
 
 import reactor.core.publisher.Mono;
 

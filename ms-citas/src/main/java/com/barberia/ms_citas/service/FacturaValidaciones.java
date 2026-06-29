@@ -1,15 +1,15 @@
-package com.barberia.ms_clientes.service;
+package com.barberia.ms_citas.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.barberia.ms_clientes.dto.BarberoExternoDTO;
-import com.barberia.ms_clientes.dto.ClienteDTO;
-import com.barberia.ms_clientes.dto.FacturaDTO;
-import com.barberia.ms_clientes.dto.ServicioExternoDTO;
-import com.barberia.ms_clientes.model.Factura;
+import com.barberia.ms_citas.dto.BarberoExternoDTO;
+import com.barberia.ms_citas.dto.ClienteDTO;
+import com.barberia.ms_citas.dto.FacturaDTO;
+import com.barberia.ms_citas.dto.ServicioExternoDTO;
+import com.barberia.ms_citas.model.Factura;
 
 import reactor.core.publisher.Mono;
 
@@ -111,3 +111,4 @@ public class FacturaValidaciones {
         return dto;
     }
 }
+
