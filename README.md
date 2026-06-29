@@ -1,4 +1,4 @@
-# Proyecto Semestral - Sistema de Barbería (Microservicios)
+# Segunda entrega - Sistema de Barbería (Microservicios)
 
 ## Integrantes
 * Leandro Araya
@@ -6,7 +6,7 @@
 * Vicente Saez
 
 ## De qué trata el proyecto
-Este es nuestro proyecto semestral para la asignatura Desarrollo FullStack 1. Es un sistema para gestionar una barbería dividido en microservicios independientes que se comunican entre sí a través de REST, usando un API Gateway para centralizar las llamadas y Netflix Eureka para que los servicios se descubran automáticamente.
+Esta es nuestra segunda entrega de la evaluación de la asignatura Desarrollo FullStack 1. Es un sistema para gestionar una barbería dividido en microservicios independientes que se comunican entre sí a través de REST, usando un API Gateway para centralizar las llamadas y Eureka para que los servicios se descubran automáticamente.
 
 ### ¿Qué diferencia hay con la entrega pasada?
 En la entrega anterior se trabajó como un microservicio monolítico. Ahora está dividido en microservicios
