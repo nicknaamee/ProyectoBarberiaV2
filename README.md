@@ -1,70 +1,30 @@
-<<<<<<< HEAD
-Ruta para ver el proyecto correcto: ProyectoBarberiaV2-BloqueNico/ProyectoBarberiaV2-BloqueNico/proyectoBarberia
-=======
-# ms-productos — Microservicio de barbería (productos, reseñas y servicios)
+# Proyecto Semestral - Sistema de Barbería (Microservicios)
 
-Microservicio Spring Boot que gestiona **productos**, **reseñas** y **servicios** de la barbería. Se comunica con los microservicios de clientes y barberos para enriquecer las reseñas.
+## Integrantes
+* Leandro Araya
+* Nicolás Poblete
+* Vicente Saez
 
-## Tecnologías
+## De qué trata el proyecto
+Este es nuestro proyecto semestral para la asignatura Desarrollo FullStack 1. Es un sistema para gestionar una barbería dividido en microservicios independientes que se comunican entre sí a través de REST, usando un API Gateway para centralizar las llamadas y Netflix Eureka para que los servicios se descubran automáticamente.
 
-- Java 21
-- Spring Boot 4.0.6
-- Spring Data JPA
-- Spring WebFlux (WebClient para llamar a otros microservicios)
-- Spring Cloud Netflix Eureka Client
-- Flyway (creación de tablas)
-- Spring HATEOAS
-- SpringDoc OpenAPI (Swagger)
-- Lombok
-- MySQL
+### ¿Qué diferencia hay con la entrega pasada?
+En la entrega anterior se trabajó como un microservicio monolítico. Ahora está dividido en microservicios
+Para esta Entrega 3, mejoramos el sistema añadiendo:
+1. **Controladores V2 con HATEOAS:** Ahora las respuestas de la API no son solo datos sueltos, sino que incluyen enlaces hipermedia (formato HAL JSON) para enseñarle al cliente qué otras acciones puede hacer (como ver el detalle de la cita o facturarla).
+2. **Pruebas Unitarias:** Creamos test con JUnit 5 y Mockito para Citas y Facturas en la carpeta `src/test/java`, asegurando que el sistema responda bien con un 80% de cobertura y maneje los errores cuando un ID no existe.
+3. **Migración con Flyway:** Activamos el control de versiones de la base de datos mediante scripts SQL en la carpeta de migración.
 
-## Estructura
+## Listado de Microservicios implementados
+* **ms-gateway:** El API Gateway que recibe todas las peticiones externas.
+* **ms-eureka:** El servidor de descubrimiento donde se registran los servicios.
+* **ms-citas:** Gestiona el agendamiento, estados y borrado de citas de la barbería.
+* **ms-vicente:** Gestiona productos, servicios y reseñas de la barbería
+* **proyectoBarberia:** Gestiona usuarios y autenticación
 
-```
-src/main/java/com/barberia/ms_clientes/
-├── MsClientesApplication.java
-├── config/
-│   ├── SwaggerConfig.java
-│   └── WebClientConfig.java        ← WebClient @LoadBalanced + CORS
-├── controller/v1/                  ← API REST (productos, reseñas, servicios)
-├── dto/                            ← incluye ClienteExternoDTO y BarberoExternoDTO
-├── exception/
-├── model/
-├── repository/
-└── service/                        ← cada dominio: XxxService + XxxValidaciones
 
-src/main/resources/
-├── application.yml                 ← perfiles dev / test / prod + eureka + flyway
-└── db/migration/V1__crear_tablas.sql   ← crea las tablas (base de datos)
-```
-
-Cada servicio está separado en **Service** (lógica CRUD) y **Validaciones** (validar datos, convertir a DTO y conectar con microservicios externos), siguiendo el patrón del profesor.
-
-## Entidades
-
-| Dominio | Entidad principal | Tabla auxiliar |
-|---------|-------------------|----------------|
-| Productos | `Producto` (productos) | `Productos` (productos_sucursal) |
-| Reseñas | `Resena` (resenas) | `Resenas` (resenas_resumen) |
-| Servicios | `Servicio` (servicios) | `Servicios` (servicios_barbero) |
-
-## Endpoints v1
-
-| Método | Ruta |
-|--------|------|
-| CRUD | `/api/v1/productos` |
-| CRUD | `/api/v1/productos-sucursal` |
-| CRUD | `/api/v1/servicios` |
-| CRUD | `/api/v1/servicios-barbero` |
-| GET/POST/DELETE | `/api/v1/resenas` |
-| CRUD | `/api/v1/resenas-resumen` |
-
-## Cómo correr
-
-```bash
-./mvnw clean install
-./mvnw spring-boot:run
-```
-
-Requiere MySQL en `localhost:3306` y, para el registro en red, el servidor Eureka en `localhost:8761`.
->>>>>>> origin/vicente_branch
+## Cómo ejecutar el proyecto en local
+1. Levantar la base de datos local en MySQL
+2. Primero, dar iniciar el microservicio `ms-eureka` desde el IDE
+3. Segundo, iniciar el microservicio `ms-gateway`
+4. Por último, encender los microservicios de negocio ms-citas, ms-vicente y proyectoBarberia
