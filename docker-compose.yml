@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: barberia-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_barberia_prod
+    ports:
+      - "3307:3306" # Expuesto en puerto diferente para no chocar con tu MySQL local
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - barberia-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  eureka-server:
+    build:
+      context: ./eureka
+      dockerfile: Dockerfile
+    container_name: barberia-eureka
+    ports:
+      - "8761:8761"
+    networks:
+      - barberia-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8761/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  proyecto-barberia:
+    build:
+      context: ./proyectoBarberia
+      dockerfile: Dockerfile
+    container_name: barberia-service
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - DB_URL=jdbc:mysql://mysql-db:3306/db_barberia_prod
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+    networks:
+      - barberia-network
+
+  api-gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    container_name: barberia-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      proyecto-barberia:
+        condition: service_started
+    networks:
+      - barberia-network
+
+volumes:
+  mysql_data:
+
+networks:
+  barberia-network:
+    driver: bridge
