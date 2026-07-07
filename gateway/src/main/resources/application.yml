@@ -1,0 +1,77 @@
+# ==============================
+# API Gateway - Punto de entrada centralizado
+# ==============================
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      # ==============================
+      # Rutas de enrutamiento hacia microservicios
+      # ==============================
+      routes:
+        # ── Microservicio: Barbería (API v1) ──
+        - id: barberia-api-v1
+          uri: lb://proyectoBarberia
+          predicates:
+            - Path=/api/barberos/**,/api/v1/**,/api/productos/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: barberiaCircuitBreaker
+                fallbackUri: forward:/fallback
+
+        # ── Microservicio: Barbería (API v2 - HATEOAS) ──
+        - id: barberia-api-v2
+          uri: lb://proyectoBarberia
+          predicates:
+            - Path=/api/v2/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: barberiaV2CircuitBreaker
+                fallbackUri: forward:/fallback
+
+        # ── Swagger del Microservicio Barbería ──
+        - id: barberia-swagger
+          uri: lb://proyectoBarberia
+          predicates:
+            - Path=/barberia/api-docs/**,/swagger-ui/**,/v3/api-docs/**
+
+      # ==============================
+      # Configuración global de CORS
+      # ==============================
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOriginPatterns: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - PATCH
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: false
+
+# ==============================
+# Eureka Client - Registro en Service Discovery
+# ==============================
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+# ==============================
+# Logging
+# ==============================
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty: INFO

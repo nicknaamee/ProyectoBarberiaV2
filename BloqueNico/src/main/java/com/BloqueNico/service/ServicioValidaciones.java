@@ -1,0 +1,35 @@
+package com.BloqueNico.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import com.BloqueNico.dto.ServicioDTO;
+import com.BloqueNico.model.Servicio;
+
+@Service
+public class ServicioValidaciones {
+
+    @Autowired
+    private WebClient.Builder webClientBuilder;
+
+    public Boolean validarServicio(Servicio servicio) {
+        if (servicio.getNombreDelServicio() == null || servicio.getNombreDelServicio().trim().isEmpty()) {
+            return false;
+        }
+        if (servicio.getPrecioDelServicio() == null || servicio.getDuracionEnMinutos() == null) {
+            return false;
+        }
+        if (servicio.getNombreDelServicio().length() > 100) {
+            return false;
+        }
+        if (servicio.getPrecioDelServicio() <= 0) {
+            return false;
+        }
+        if (servicio.getDuracionEnMinutos() < 5 || servicio.getDuracionEnMinutos() > 480) {
+            return false;
+        }
+        return true;
+    }
+
+}
