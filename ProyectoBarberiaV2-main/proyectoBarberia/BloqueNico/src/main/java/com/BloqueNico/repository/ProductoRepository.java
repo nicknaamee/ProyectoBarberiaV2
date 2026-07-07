@@ -1,0 +1,15 @@
+package com.BloqueNico.repository;
+
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.BloqueNico.model.Producto;
+
+import java.util.List;
+
+@Repository
+public interface ProductoRepository extends JpaRepository<Producto, Long> {
+
+    List<Producto> findByNombreDelProductoContainingIgnoreCase(String nombre);
+}

@@ -1,0 +1,35 @@
+package com.BloqueNico.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import com.BloqueNico.dto.ProductoDTO;
+import com.BloqueNico.model.Producto;
+
+@Service
+public class ProductoValidaciones {
+
+    @Autowired
+    private WebClient.Builder webClientBuilder;
+
+    public Boolean validarProducto(Producto producto) {
+        if (producto.getNombreDelProducto() == null || producto.getNombreDelProducto().trim().isEmpty()) {
+            return false;
+        }
+        if (producto.getCantidadEnStock() == null || producto.getPrecioUnitarioDelProducto() == null) {
+            return false;
+        }
+        if (producto.getNombreDelProducto().length() > 100) {
+            return false;
+        }
+        if (producto.getCantidadEnStock() < 0) {
+            return false;
+        }
+        if (producto.getPrecioUnitarioDelProducto() <= 0) {
+            return false;
+        }
+        return true;
+    }
+
+}

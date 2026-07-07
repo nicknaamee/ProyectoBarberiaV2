@@ -1,0 +1,22 @@
+package com.BloqueNico.assemblers;
+
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.RepresentationModelAssembler;
+import org.springframework.stereotype.Component;
+
+import com.BloqueNico.dto.ResenaDTO;
+import com.BloqueNico.controller.v2.ResenaControllerV2;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+@Component
+public class ResenaModelAssembler implements RepresentationModelAssembler<ResenaDTO, EntityModel<ResenaDTO>> {
+
+    @Override
+    public EntityModel<ResenaDTO> toModel(ResenaDTO dto) {
+        return EntityModel.of(dto,
+                linkTo(methodOn(ResenaControllerV2.class).obtenerPorId(dto.getIdDeLaResena())).withSelfRel(),
+                linkTo(methodOn(ResenaControllerV2.class).listarTodas()).withRel("resenas"));
+    }
+}
