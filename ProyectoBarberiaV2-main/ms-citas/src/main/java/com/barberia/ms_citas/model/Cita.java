@@ -8,7 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Column;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,16 +23,16 @@ public class Cita {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCita;
 
-    @JoinColumn(name = "id_barbero")
+    @Column(name = "id_barbero")
     private Long idBarbero;
 
-    @JoinColumn(name = "id_cliente")
+    @Column(name = "id_cliente")
     private Long idCliente;
 
     private LocalDate fechaCita;
     private LocalTime horaInicio;
     private String estadoCita;
 
-    @JoinColumn(name = "id_servicio")
+    @Column(name = "id_servicio")
     private Long idServicio;
 }
